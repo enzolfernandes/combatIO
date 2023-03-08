@@ -14,8 +14,8 @@
 #define purple 95, 10, 147
 
 // Motores
-constexpr int leftMotorPin = 24;
 constexpr int rightMotorPin = 25;
+constexpr int leftMotorPin = 26;
 Servo leftMotor;
 Servo rightMotor;
 constexpr int stopped = 90; // Ponto neutro dos motores, varia de cada ESC, teremos que usar o osciloscópio para saber
@@ -26,7 +26,7 @@ void setup()
 {
     // PS4.begin("40:99:22:f6:ca:78"); // Controle de Casa
     PS4.begin("e8:d8:19:b9:72:58"); // Controle do Taka
-    Serial.begin(115200);
+    Serial.begin(9600);
 
     while (!PS4.isConnected())
     {
@@ -76,10 +76,12 @@ void loop()
             leftMotor.write(stopped);
             rightMotor.write(stopped);
         };
-
-        Serial.print(leftMotorOutput);
-        Serial.print(" ");
+        
+        Serial.print("Motor Esquerdo: ");
+        Serial.println(leftMotorOutput);
+        Serial.print("Motor Direito: ");
         Serial.println(rightMotorOutput);
+        Serial.println("-------------------------");
     }
     else
     {
