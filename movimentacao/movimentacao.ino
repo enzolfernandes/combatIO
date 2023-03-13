@@ -62,8 +62,8 @@ void loop()
         int LStickX = PS4.LStickX();
         int LStickY = PS4.LStickY();
 
-        int leftMotorOutput = constrain(map(LStickY, -127, 127, 0, 180) + map(LStickX, -127, 127, 0, 180), 0, 180);
-        int rightMotorOutput = constrain(map(LStickY, -127, 127, 0, 180) - map(LStickX, -127, 127, 0, 180), 0, 180);
+        int leftMotorOutput = constrain(map(LStickY, -128, 127, 0, 180) + map(LStickX, -127, 127, 0, 180), 0, 180);
+        int rightMotorOutput = constrain(map(LStickY, -128, 127, 0, 180) - map(LStickX, -127, 127, 0, 180), 0, 180);
 
         // Zona morta do analógico
         if (leftMotorOutput && rightMotorOutput > 95 || leftMotorOutput && rightMotorOutput < 85)
