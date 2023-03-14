@@ -17,11 +17,11 @@
 // Motores
 constexpr int rightMotorPin = 25;
 constexpr int leftMotorPin = 26;
-Servo leftMotor;
-Servo rightMotor;
-constexpr int stopped = 90; // Ponto neutro dos motores, varia de cada ESC, teremos que usar o osciloscópio para saber
-constexpr int forward = 0;  // Talvez não seja útil
-constexpr int reverse = 0;  // Talvez não seja útil
+Servo.attach(leftMotorPin, 1080, 1800);
+Servo.attach(rightMotorPin, 1080, 1800);
+constexpr int stopped = 1480; // Ponto neutro dos motores, varia de cada ESC, teremos que usar o osciloscópio para saber
+constexpr int forward = 1800;  // Talvez não seja útil
+constexpr int reverse = 1080;  // Talvez não seja útil
 
 void setup()
 {
