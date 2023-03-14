@@ -12,6 +12,7 @@
 #define yellow 255, 255, 0
 #define pink 225, 53, 61
 #define purple 95, 10, 147
+#define orange 255, 165, 0
 
 // Motores
 constexpr int rightMotorPin = 25;
@@ -50,7 +51,7 @@ void loop()
     if (PS4.isConnected())
     {
 
-        if(PS4.R2() == 1)
+        if (PS4.R2() == 1)
         {
             Serial.println("Arma ativada");
         }
@@ -58,7 +59,7 @@ void loop()
         {
             Serial.println("Arma desativada");
         };
-        
+
         int LStickX = PS4.LStickX();
         int LStickY = PS4.LStickY();
 
@@ -76,7 +77,7 @@ void loop()
             leftMotor.write(stopped);
             rightMotor.write(stopped);
         };
-        
+
         Serial.print("Motor Esquerdo: ");
         Serial.println(leftMotorOutput);
         Serial.print("Motor Direito: ");
