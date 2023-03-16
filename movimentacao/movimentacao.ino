@@ -17,11 +17,14 @@
 // Motores
 constexpr int rightMotorPin = 25;
 constexpr int leftMotorPin = 26;
-Servo.attach(leftMotorPin, 1080, 1800);
-Servo.attach(rightMotorPin, 1080, 1800);
-constexpr int stopped = 1480; // Ponto neutro dos motores, varia de cada ESC, teremos que usar o osciloscópio para saber
-constexpr int forward = 1800;  // Talvez não seja útil
-constexpr int reverse = 1080;  // Talvez não seja útil
+
+Servo leftMotor;
+Servo rightMotor;
+
+constexpr const int stopped = 1480; // Ponto neutro dos motores, varia de cada ESC, teremos que usar o osciloscópio para saber
+constexpr const int forward = 1800; // Talvez não seja útil
+constexpr const int reverse = 1080; // Talvez não seja útil
+constexpr const int intervalo = 50; // ms
 
 void setup()
 {
@@ -32,15 +35,14 @@ void setup()
     while (!PS4.isConnected())
     {
         Serial.println("Disconnected");
-        delay(50);
     };
     PS4.setLed(purple);
     PS4.sendToController();
 
-    leftMotor.attach(leftMotorPin);
-    rightMotor.attach(rightMotorPin);
-    leftMotor.write(stopped);
-    rightMotor.write(stopped);
+    leftMotor.attach(leftMotorPin, 1080, 1800);
+    rightMotor.attach(rightMotorPin, 1080, 1800);
+    leftMotor.writeMicroseconds(stopped);
+    rightMotor.writeMicroseconds(stopped);
 
     Serial.println("Connected");
 }
@@ -54,6 +56,8 @@ void loop()
         if (PS4.R2() == 1)
         {
             Serial.println("Arma ativada");
+            leftMotor.writeMicroseconds(forward); // teste
+            delay(intervalo);
         }
         else
         {
@@ -69,13 +73,15 @@ void loop()
         // Zona morta do analógico
         if (leftMotorOutput && rightMotorOutput > 95 || leftMotorOutput && rightMotorOutput < 85)
         {
-            leftMotor.write(leftMotorOutput);
-            rightMotor.write(rightMotorOutput);
+            leftMotor.writeMicroseconds(leftMotorOutput);
+            rightMotor.writeMicroseconds(rightMotorOutput);
+            delay(intervalo);
         }
         else
         {
-            leftMotor.write(stopped);
-            rightMotor.write(stopped);
+            leftMotor.writeMicroseconds(stopped);
+            rightMotor.writeMicroseconds(stopped);
+            delay(intervalo);
         };
 
         Serial.print("Motor Esquerdo: ");
@@ -86,7 +92,8 @@ void loop()
     }
     else
     {
-        leftMotor.write(stopped);
-        rightMotor.write(stopped);
+        leftMotor.writeMicroseconds(stopped);
+        rightMotor.writeMicroseconds(stopped);
+        delay(intervalo);
     };
 }
