@@ -39,9 +39,12 @@ void setup()
     PS4.setLed(purple);
     PS4.sendToController();
 
-    leftMotor.attach(leftMotorPin, 1080, 1800);
-    rightMotor.attach(rightMotorPin, 1080, 1800);
+    leftMotor.attach(leftMotorPin, reverse, forward);
+    leftMotor.setPeriodHertz(100); // testar com 48kHz
     leftMotor.writeMicroseconds(stopped);
+
+    rightMotor.attach(rightMotorPin, reverse, forward);
+    rightMotor.setPeriodHertz(100);
     rightMotor.writeMicroseconds(stopped);
 
     Serial.println("Connected");
@@ -67,8 +70,8 @@ void loop()
         int LStickX = PS4.LStickX();
         int LStickY = PS4.LStickY();
 
-        int leftMotorOutput = constrain(map(LStickY, -128, 127, 0, 180) + map(LStickX, -127, 127, 0, 180), 0, 180);
-        int rightMotorOutput = constrain(map(LStickY, -128, 127, 0, 180) - map(LStickX, -127, 127, 0, 180), 0, 180);
+        int leftMotorOutput = constrain(map(LStickY, -128, 127, stopped, forward) + map(LStickX, -127, 127, stopped, forward), stopped, forward);
+        int rightMotorOutput = constrain(map(LStickY, -128, 127, stopped, forward) - map(LStickX, -127, 127, stopped, forward), stopped, forward);
 
         // Zona morta do analógico
         if (leftMotorOutput && rightMotorOutput > 95 || leftMotorOutput && rightMotorOutput < 85)
