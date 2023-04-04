@@ -4,6 +4,8 @@
 #include <ESP32Servo.h>
 #include <ESP32Tone.h>
 #include <PS4Controller.h>
+#include <Wire.h>
+#include <VL53L1X.h>
 
 // Colors
 #define red 255, 0, 0
