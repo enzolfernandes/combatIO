@@ -27,7 +27,7 @@ constexpr int stopped = 90; // Ponto neutro dos motores, varia de cada ESC, tere
 constexpr int forward = 0;  // Talvez não seja útil
 constexpr int reverse = 0;  // Talvez não seja útil
 //lidar 
-constexpr int lidarpin = 21,22;
+constexpr int lidarPin = 21,22;
 const long ready = 0x80; // Botão 1 do controle remoto  
 const long start = 0x81; // Botão 2 do controle remoto 
 const long stop = 0x82;  // Botão 3 do controle remoto
@@ -35,6 +35,7 @@ short pino_receptor_infravermelho{2};// receptor
 
 void setup()
 {
+    pinMode(21,22, OUTPUT);// lidar vai enviar dados 
      IrReceiver.begin(pino_receptor_infravermelho);// infravermelho recebe os dados do controle 
 
     // PS4.begin("40:99:22:f6:ca:78"); // Controle de Casa
@@ -109,12 +110,9 @@ void loop()
             Serial.println("ready");
             PS4.setLed(yellow); // cor amarela 
             PS4.sendToController();
-            lidar.begin(serial);
-             pinMode(21,22, OUTPUT);// lidar vai enviar dados 
-             pinMode(leftMotor, INPUT);
-             pinMode(rightMotor, INPUT);
-             analogWrite(leftmotor, 90);// motor esquerdo parado
-             analogWrite(rightmotor, 90);// motor direito parado
+            lidar.begin(serial); 
+             analogWrite(leftmotor, stopped);// motor esquerdo parado
+             analogWrite(rightmotor, stopped);// motor direito parado
 
         }
         else
