@@ -29,14 +29,15 @@ constexpr const int intervalo = 50; // ms
 void setup()
 {
     // PS4.begin("40:99:22:f6:ca:78"); // Controle de Casa
-    PS4.begin("e8:d8:19:b9:72:58"); // Controle do Taka
-    Serial.begin(9600);
+    PS4.begin("94:b9:7e:d5:21:b6"); // Controle do Taka
+    // PS4.begin("a8:47:4a:90:07:a8"); // Controle do Daloco
+    Serial.begin(115200);
 
     while (!PS4.isConnected())
     {
         Serial.println("Disconnected");
     };
-    PS4.setLed(purple);
+    PS4.setLed(green);
     PS4.sendToController();
 
     leftMotor.attach(leftMotorPin, reverse, forward);
