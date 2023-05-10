@@ -55,7 +55,7 @@ void setup()
   PS4.attach(notify);
   PS4.attachOnConnect(onConnect);
   PS4.attachOnDisconnect(onDisConnect);
-  PS4.begin("e8:d8:19:b9:72:58");
+  PS4.begin("64:32:a8:8a:46:47");
   Serial.println("Ready");
 }
 

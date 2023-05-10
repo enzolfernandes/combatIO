@@ -21,11 +21,15 @@
 // Motores
 constexpr int rightMotorPin = 25;
 constexpr int leftMotorPin = 26;
+
 Servo leftMotor;
 Servo rightMotor;
-constexpr int stopped = 90; // Ponto neutro dos motores, varia de cada ESC, teremos que usar o osciloscópio para saber
-constexpr int forward = 0;  // Talvez não seja útil
-constexpr int reverse = 0;  // Talvez não seja útil
+
+constexpr const int stopped = 1480; // Ponto neutro dos motores, varia de cada ESC, teremos que usar o osciloscópio para saber
+constexpr const int forward = 1800; // Talvez não seja útil
+constexpr const int reverse = 1080; // Talvez não seja útil
+constexpr const int intervalo = 50; // ms
+
 //lidar 
 constexpr int lidarPin = 21,22;
 const long ready = 0x80; // Botão 1 do controle remoto  
@@ -39,21 +43,24 @@ void setup()
      IrReceiver.begin(pino_receptor_infravermelho);// infravermelho recebe os dados do controle 
 
     // PS4.begin("40:99:22:f6:ca:78"); // Controle de Casa
-    PS4.begin("e8:d8:19:b9:72:58"); // Controle do Taka
-    Serial.begin(9600);
+    PS4.begin("94:b9:7e:d5:21:b6"); // Controle do Taka
+    // PS4.begin("a8:47:4a:90:07:a8"); // Controle do Daloco
+    Serial.begin(115200);
 
     while (!PS4.isConnected())
     {
         Serial.println("Disconnected");
-        delay(50);
     };
-    PS4.setLed(purple);
+    PS4.setLed(green);
     PS4.sendToController();
 
-    leftMotor.attach(leftMotorPin);
-    rightMotor.attach(rightMotorPin);
-    leftMotor.write(stopped);
-    rightMotor.write(stopped);
+    leftMotor.attach(leftMotorPin, reverse, forward);
+    leftMotor.setPeriodHertz(100); // testar com 48kHz
+    leftMotor.writeMicroseconds(stopped);
+
+    rightMotor.attach(rightMotorPin, reverse, forward);
+    rightMotor.setPeriodHertz(100);
+    rightMotor.writeMicroseconds(stopped);
 
     Serial.println("Connected");
 }
@@ -67,6 +74,8 @@ void loop()
         if (PS4.R2() == 1)
         {
             Serial.println("Arma ativada");
+            leftMotor.writeMicroseconds(forward); // teste
+            delay(intervalo);
         }
         else
         {
@@ -76,19 +85,21 @@ void loop()
         int LStickX = PS4.LStickX();
         int LStickY = PS4.LStickY();
 
-        int leftMotorOutput = constrain(map(LStickY, -128, 127, 0, 180) + map(LStickX, -127, 127, 0, 180), 0, 180);
-        int rightMotorOutput = constrain(map(LStickY, -128, 127, 0, 180) - map(LStickX, -127, 127, 0, 180), 0, 180);
+        int leftMotorOutput = constrain(map(LStickY, -128, 127, stopped, forward) + map(LStickX, -127, 127, stopped, forward), stopped, forward);
+        int rightMotorOutput = constrain(map(LStickY, -128, 127, stopped, forward) - map(LStickX, -127, 127, stopped, forward), stopped, forward);
 
         // Zona morta do analógico
         if (leftMotorOutput && rightMotorOutput > 95 || leftMotorOutput && rightMotorOutput < 85)
         {
-            leftMotor.write(leftMotorOutput);
-            rightMotor.write(rightMotorOutput);
+            leftMotor.writeMicroseconds(leftMotorOutput);
+            rightMotor.writeMicroseconds(rightMotorOutput);
+            delay(intervalo);
         }
         else
         {
-            leftMotor.write(stopped);
-            rightMotor.write(stopped);
+            leftMotor.writeMicroseconds(stopped);
+            rightMotor.writeMicroseconds(stopped);
+            delay(intervalo);
         };
 
         Serial.print("Motor Esquerdo: ");
@@ -99,8 +110,9 @@ void loop()
     }
     else
     {
-        leftMotor.write(stopped);
-        rightMotor.write(stopped);
+        leftMotor.writeMicroseconds(stopped);
+        rightMotor.writeMicroseconds(stopped);
+        delay(intervalo);
     };
     if (IrReceiver.decode()) // função ready
     {
