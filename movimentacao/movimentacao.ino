@@ -4,6 +4,10 @@
 #include <ESP32Servo.h>
 #include <ESP32Tone.h>
 #include <PS4Controller.h>
+#include <Wire.h>
+#include <VL53L1X.h>
+#include "movimentos_basicos.hpp"
+#include <IRremote.hpp>
 
 // Colors
 #define red 255, 0, 0
@@ -26,8 +30,18 @@ constexpr const int forward = 1800; // Talvez não seja útil
 constexpr const int reverse = 1080; // Talvez não seja útil
 constexpr const int intervalo = 50; // ms
 
+//lidar 
+constexpr int lidarPin = 21,22;
+const long ready = 0x80; // Botão 1 do controle remoto  
+const long start = 0x81; // Botão 2 do controle remoto 
+const long stop = 0x82;  // Botão 3 do controle remoto
+short pino_receptor_infravermelho{2};// receptor
+
 void setup()
 {
+    pinMode(21,22, OUTPUT);// lidar vai enviar dados 
+     IrReceiver.begin(pino_receptor_infravermelho);// infravermelho recebe os dados do controle 
+
     // PS4.begin("40:99:22:f6:ca:78"); // Controle de Casa
     PS4.begin("94:b9:7e:d5:21:b6"); // Controle do Taka
     // PS4.begin("a8:47:4a:90:07:a8"); // Controle do Daloco
@@ -100,4 +114,63 @@ void loop()
         rightMotor.writeMicroseconds(stopped);
         delay(intervalo);
     };
+    if (IrReceiver.decode()) // função ready
+    {
+
+        if (IrReceiver.decodedIRData.decodedRawData == ready)
+        {
+            Serial.println("ready");
+            PS4.setLed(yellow); // cor amarela 
+            PS4.sendToController();
+            lidar.begin(serial); 
+             analogWrite(leftmotor, stopped);// motor esquerdo parado
+             analogWrite(rightmotor, stopped);// motor direito parado
+
+        }
+        else
+        {
+            Serial.println("not ready");
+        };
+    }
+ if (IrReceiver.decode()) // função start
+    {
+
+        if (IrReceiver.decodedIRData.decodedRawData == start)
+        {
+            if (IS_OK(lidar.waitpoint()))
+         {
+           float distance = lidar.getCurrentPoint().distance;
+              if (lidar.getCurrentPoint().satrtBit)
+                {  analogWrite(leftMotor, 180);//motor esquerdo para frente 
+                   analogWrite(rightMotor, 180);// motor direito para frente 
+                }
+            PS4.setLed(green);//cor verde 
+            PS4.sendToController();
+            Serial.println("start");
+         }
+        else
+          {
+            Serial.println("not startted");
+          }
+        }
+    }
+ if (IrReceiver.decode()) // função stop
+    {     
+        PS4.setLed(red);//cor vermelha  
+        PS4.sendToController();
+        Serial.println("stop");
+        if (IrReceiver.decodedIRData.decodedRawData == stop)
+     {
+        while (true)
+        {
+          analogWrite(leftmotor, 90);// motor esquerdo parado
+          analogWrite(rightmotor, 90);// motor direito parado
+        }  
+     }
+
+    else
+        {
+            Serial.println("not stopped");
+        }
+    }
 }
