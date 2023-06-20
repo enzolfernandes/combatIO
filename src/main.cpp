@@ -4,14 +4,13 @@
 #include <ESP32Servo.h>
 
 // Controle
-const char *joystickAddress = "94:b9:7e:d5:21:b6"; // Controle do Taka
+const char *joystickAddress = "2c:dc:d7:1b:3c:0a"; // Controle do Taka
 
 // Cores de Identificação
 #define red 255, 0, 0
 #define yellow 255, 255, 0
 #define green 0, 255, 0
 #define pink 225, 53, 61
-#define purple 95, 10, 147
 
 // Motores
 constexpr int rightMotorPin = 25;
@@ -21,21 +20,16 @@ Servo leftMotor;
 Servo rightMotor;
 
 constexpr const int OperationFrequency = 50; // Hz
-constexpr const int interval = 0;           // ms
+constexpr const int interval = 5;            // ms
 constexpr const int movementInterval = 500;  // ms
 
-//* Valores do ESC do Locomotiva
-// constexpr const int reverse = 1080; // us
-// constexpr const int stopped = 1480;
-// constexpr const int forward = 1800;
+constexpr const int reverse = 0; // graus
+constexpr const int stopped = 90;
+constexpr const int forward = 180;
 
-// TODO: Testar com Valores padrão
-constexpr const int reverse = 1000; // us
-constexpr const int stopped = 1500;
-constexpr const int forward = 2000;
-
+// TODO: Fazer um Mode.cpp contendo essa parte de modos
 // Modos
-// #define _DEBUG_ //* Enquanto a linha abaixo não for um comentário, os valores do controle, LIDAR, receptor infravermelho e motores serão mostrados no monitor serial
+#define _DEBUG_ //* Enquanto a linha abaixo não for um comentário, os valores do controle, LIDAR, receptor infravermelho e motores serão mostrados no monitor serial
 // #define _AUTONOMOUS_ //* Ativa o Modo Autônomo, caso esteja comentado o Modo Controlado é ativado
 #ifdef _AUTONOMOUS_
 #include "autonomous.cpp"
@@ -53,7 +47,7 @@ void setup()
   ESP32PWM::allocateTimer(3);
 
   // Conexão com o joystick
-  Serial.begin(300);
+  Serial.begin(1200);
   PS4.begin(joystickAddress);
 
   while (!PS4.isConnected())
@@ -63,28 +57,22 @@ void setup()
 #endif
   };
 
-  PS4.setLed(green);
-  PS4.sendToController();
-
-  // Vinculando e configurando os motores
-  leftMotor.attach(leftMotorPin);
-  leftMotor.setPeriodHertz(OperationFrequency);
-  leftMotor.writeMicroseconds(stopped);
-
-  rightMotor.attach(rightMotorPin);
-  rightMotor.setPeriodHertz(OperationFrequency);
-  rightMotor.writeMicroseconds(stopped);
-
 #ifdef _DEBUG_
   Serial.println("Connected");
 #endif
 
+  // Vinculando e configurando os motores
+  leftMotor.attach(leftMotorPin);
+  leftMotor.setPeriodHertz(OperationFrequency);
+  leftMotor.write(stopped);
+
+  rightMotor.attach(rightMotorPin);
+  rightMotor.setPeriodHertz(OperationFrequency);
+  rightMotor.write(stopped);
+
 #ifdef _AUTONOMOUS_
   autonomousSetup();
   PS4.setLed(pink);
-  PS4.sendToController();
-#else
-  PS4.setLed(purple);
   PS4.sendToController();
 #endif
 }
