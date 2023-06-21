@@ -23,6 +23,9 @@ constexpr const int OperationFrequency = 50; // Hz
 constexpr const int interval = 5;            // ms
 constexpr const int movementInterval = 500;  // ms
 
+constexpr const int minimumPulseWidth = 500;  // us, Padrão: 1000us, Funcional: 1080us
+constexpr const int maximumPulseWidth = 2000;  // us
+
 constexpr const int reverse = 0; // graus
 constexpr const int stopped = 90;
 constexpr const int forward = 180;
@@ -62,11 +65,11 @@ void setup()
 #endif
 
   // Vinculando e configurando os motores
-  leftMotor.attach(leftMotorPin);
+  leftMotor.attach(leftMotorPin, minimumPulseWidth, maximumPulseWidth);
   leftMotor.setPeriodHertz(OperationFrequency);
   leftMotor.write(stopped);
 
-  rightMotor.attach(rightMotorPin);
+  rightMotor.attach(rightMotorPin, minimumPulseWidth, maximumPulseWidth);
   rightMotor.setPeriodHertz(OperationFrequency);
   rightMotor.write(stopped);
 
