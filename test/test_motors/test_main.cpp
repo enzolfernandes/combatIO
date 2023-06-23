@@ -1,12 +1,10 @@
+// TODO: Incompleto
+
 #include <unity.h>
 #include <joystick.cpp>
 #include <motors.cpp>
 
-void setup()
-{
-    motorsAttach();
-}
-void loop()
+void test_motors()
 {
     if (PS4.L2() == 1)
     {
@@ -39,4 +37,22 @@ void loop()
         rightMotor.write(stopped);
         delay(interval);
     };
+}
+
+void setup()
+{
+    UNITY_BEGIN();
+    joystickSetup();
+    motorsSetup();
+    PS4.setLed(orange);
+    PS4.sendToController();
+}
+
+void loop()
+{
+    RUN_TEST(test_motors);
+    if (PS4.Cross() == 1)
+    {
+        UNITY_END();
+    }
 }

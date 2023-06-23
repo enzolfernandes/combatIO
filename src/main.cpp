@@ -22,22 +22,9 @@ void setup()
   ESP32PWM::allocateTimer(2);
   ESP32PWM::allocateTimer(3);
 
-  // Conexão com o joystick
   Serial.begin(1200);
-  PS4.begin(joystickAddress);
-
-  while (!PS4.isConnected())
-  {
-#ifdef _DEBUG_
-    Serial.println("Disconnected");
-#endif
-  };
-
-#ifdef _DEBUG_
-  Serial.println("Connected");
-#endif
-
-  motorsAttach();
+  joystickSetup();
+  motorsSetup();
 
 #ifdef _AUTONOMOUS_
   autonomousSetup();

@@ -17,7 +17,7 @@ constexpr const short forward = 180;
 Servo leftMotor;
 Servo rightMotor;
 
-void motorsAttach()
+void motorsSetup()
 {
     leftMotor.attach(leftMotorPin, minimumPulseWidth, maximumPulseWidth);
     leftMotor.setPeriodHertz(OperationFrequency);
