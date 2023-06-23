@@ -1,39 +1,12 @@
-// Bibliotecas Gerais
 #include <Arduino.h>
-#include <PS4Controller.h>
-#include <ESP32Servo.h>
+#include <joystick.cpp>
+#include <motors.cpp>
 
-// Controle
-const char *joystickAddress = "2c:dc:d7:1b:3c:0a"; // Controle do Taka
+// ! Modos
+//* Enquanto a linha abaixo não for um comentário, a referente parte não será compilada
+// #define _DEBUG_
+// #define _AUTONOMOUS_
 
-// Cores de Identificação
-#define red 255, 0, 0
-#define yellow 255, 255, 0
-#define green 0, 255, 0
-#define pink 225, 53, 61
-
-// Motores
-constexpr int rightMotorPin = 25;
-constexpr int leftMotorPin = 26;
-
-Servo leftMotor;
-Servo rightMotor;
-
-constexpr const int OperationFrequency = 50; // Hz
-constexpr const int interval = 5;            // ms
-constexpr const int movementInterval = 500;  // ms
-
-constexpr const int minimumPulseWidth = 500;  // us, Padrão: 1000us, Funcional: 1080us
-constexpr const int maximumPulseWidth = 2000;  // us
-
-constexpr const int reverse = 0; // graus
-constexpr const int stopped = 90;
-constexpr const int forward = 180;
-
-// TODO: Fazer um Mode.cpp contendo essa parte de modos
-// Modos
-#define _DEBUG_ //* Enquanto a linha abaixo não for um comentário, os valores do controle, LIDAR, receptor infravermelho e motores serão mostrados no monitor serial
-// #define _AUTONOMOUS_ //* Ativa o Modo Autônomo, caso esteja comentado o Modo Controlado é ativado
 #ifdef _AUTONOMOUS_
 #include "autonomous.cpp"
 #else
@@ -64,14 +37,7 @@ void setup()
   Serial.println("Connected");
 #endif
 
-  // Vinculando e configurando os motores
-  leftMotor.attach(leftMotorPin, minimumPulseWidth, maximumPulseWidth);
-  leftMotor.setPeriodHertz(OperationFrequency);
-  leftMotor.write(stopped);
-
-  rightMotor.attach(rightMotorPin, minimumPulseWidth, maximumPulseWidth);
-  rightMotor.setPeriodHertz(OperationFrequency);
-  rightMotor.write(stopped);
+  motorsAttach();
 
 #ifdef _AUTONOMOUS_
   autonomousSetup();

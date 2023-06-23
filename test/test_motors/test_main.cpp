@@ -1,4 +1,12 @@
-void independentMotorsLoop()
+#include <unity.h>
+#include <joystick.cpp>
+#include <motors.cpp>
+
+void setup()
+{
+    motorsAttach();
+}
+void loop()
 {
     if (PS4.L2() == 1)
     {

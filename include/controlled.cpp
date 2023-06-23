@@ -1,7 +1,7 @@
 void controlledLoop()
 {
-    int LStickX = PS4.LStickX();
-    int LStickY = PS4.LStickY();
+    short LStickX = PS4.LStickX();
+    short LStickY = PS4.LStickY();
 #ifdef _DEBUG_
     Serial.print("Eixo X do Analogico: ");
     Serial.println(LStickX);
@@ -9,8 +9,8 @@ void controlledLoop()
     Serial.println(LStickY);
 #endif
 
-    int leftMotorOutput = constrain(map(LStickY, -127, 127, reverse, forward) + map(LStickX, -127, 127, reverse, forward), reverse, forward);
-    int rightMotorOutput = constrain(map(LStickY, -127, 127, reverse, forward) - map(LStickX, -127, 127, reverse, forward), reverse, forward);
+    short leftMotorOutput = constrain(map(LStickY, -127, 127, reverse, forward) + map(LStickX, -127, 127, reverse, forward), reverse, forward);
+    short rightMotorOutput = constrain(map(LStickY, -127, 127, reverse, forward) - map(LStickX, -127, 127, reverse, forward), reverse, forward);
     
     // Zona morta do analógico
     // TODO: Verificar a usabilidade
