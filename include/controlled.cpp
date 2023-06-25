@@ -1,3 +1,5 @@
+#include <motors.cpp>
+
 void controlledLoop()
 {
     short LStickX = PS4.LStickX();

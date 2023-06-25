@@ -55,7 +55,6 @@ void setup()
 void loop()
 {
     RUN_TEST(test_IRdecode);
-    delay(500);
     RUN_TEST(test_motors);
     PS4.setLed(green);
     PS4.sendToController();

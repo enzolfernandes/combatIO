@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <joystick.cpp>
-#include <motors.cpp>
 
 // ! Modos
 //* Enquanto a linha abaixo não for um comentário, a referente parte não será compilada
