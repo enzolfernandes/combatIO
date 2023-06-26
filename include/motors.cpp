@@ -4,7 +4,7 @@ constexpr const short rightMotorPin = 25;
 constexpr const short leftMotorPin = 26;
 
 constexpr const short OperationFrequency = 50; // Hz
-constexpr const short interval = 5;            // ms
+constexpr const short interval = 50;           // ms
 constexpr const short movementInterval = 500;  // ms
 
 constexpr const short minimumPulseWidth = 500;  // us, Padrão: 1000us, Funcional: 1080us

@@ -1,5 +1,3 @@
-#include <motors.cpp>
-
 void controlledLoop()
 {
     short LStickX = PS4.LStickX();
@@ -13,7 +11,7 @@ void controlledLoop()
 
     short leftMotorOutput = constrain(map(LStickY, -127, 127, reverse, forward) + map(LStickX, -127, 127, reverse, forward), reverse, forward);
     short rightMotorOutput = constrain(map(LStickY, -127, 127, reverse, forward) - map(LStickX, -127, 127, reverse, forward), reverse, forward);
-    
+
     // Zona morta do analógico
     // TODO: Verificar a usabilidade
     //* Caso ele não dispare ao ser ligado ou apresente movimentos não esperados
