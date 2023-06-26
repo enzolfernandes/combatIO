@@ -22,6 +22,7 @@ void test_IRdecode(void)
 
 void test_lidar(void)
 {
+    TEST_ASSERT_GREATER_THAN_INT16(0, lidarReadDistance());
 }
 
 void test_motors(void)
@@ -35,8 +36,8 @@ void test_motors(void)
     leftMotor.write(forward);
     rightMotor.write(forward);
     delay(2000);
-    leftMotor.detach();
-    rightMotor.detach();
+    leftMotor.write(stopped);
+    rightMotor.write(stopped);
 
     TEST_ASSERT(true);
 }
@@ -55,6 +56,7 @@ void setup()
 void loop()
 {
     RUN_TEST(test_IRdecode);
+    RUN_TEST(test_lidar);
     RUN_TEST(test_motors);
     PS4.setLed(green);
     PS4.sendToController();
