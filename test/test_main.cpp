@@ -14,7 +14,7 @@ void test_IRdecode(void)
         if (IrReceiver.decode())
         {
 
-            TEST_ASSERT_GREATER_THAN_HEX32(0, IrReceiver.decodedIRData.decodedRawData); // Botão Play/Pause
+            TEST_ASSERT_GREATER_THAN_HEX32(0, IrReceiver.decodedIRData.decodedRawData);
             valueReceived = true;
         }
     }
