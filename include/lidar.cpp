@@ -13,8 +13,7 @@ void lidarSetup()
 #ifdef _DEBUG_
         Serial.println(" Sensor não detectado ou iniciado!");
 #endif
-        while (1)
-            ;
+        while (1);
     }
 
     distanceSensor.setDistanceMode(VL53L1X::Long);
@@ -25,10 +24,11 @@ void lidarSetup()
 uint16_t lidarReadDistance()
 {
 #ifdef _DEBUG_
-    Serial.print("Distancia: " + distanceSensor.read() + "mm");
+    Serial.print("Distancia (mm): ");
+    Serial.println(distanceSensor.read());
     if (distanceSensor.timeoutOccurred())
     {
-        Serial.print(" Distance Sensor TIMEOUT");
+        Serial.print(" Sensor de Distancia Inoperante");
     }
 
     Serial.println();

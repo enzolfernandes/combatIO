@@ -4,6 +4,37 @@
 #include <lidar.cpp>
 #include <motors.cpp>
 
+// Testes de Setup
+void test_joystickSetup(void)
+{
+    joystickSetup();
+    TEST_ASSERT(true);
+}
+
+void test_IRreciverSetup(void)
+{
+    IRreciverSetup();
+    TEST_ASSERT(true);
+}
+
+void test_lidarSetup(void)
+{
+    lidarSetup();
+    TEST_ASSERT(true);
+}
+
+void test_motorsSetup(void)
+{
+    motorsSetup();
+    TEST_ASSERT(true);
+}
+
+// Testes de Loop
+void test_joystick(void)
+{
+    TEST_ASSERT(PS4.isConnected() == true);
+}
+
 void test_IRdecode(void)
 {
     bool valueReceived = false;
@@ -45,19 +76,22 @@ void test_motors(void)
 void setup()
 {
     UNITY_BEGIN();
-    joystickSetup();
-    IRreciverSetup();
-    lidarSetup();
-    motorsSetup();
+    RUN_TEST(test_joystickSetup);
+    RUN_TEST(test_IRreciverSetup);
+    RUN_TEST(test_lidarSetup);
+    RUN_TEST(test_motorsSetup);
+
     PS4.setLed(orange);
     PS4.sendToController();
 }
 
 void loop()
 {
+    RUN_TEST(test_joystick);
     RUN_TEST(test_IRdecode);
     RUN_TEST(test_lidar);
     RUN_TEST(test_motors);
+
     PS4.setLed(green);
     PS4.sendToController();
     UNITY_END();

@@ -3,8 +3,8 @@
 
 // ! Modos
 //* Enquanto a linha abaixo não for um comentário, a referente parte não será compilada
-// #define _DEBUG_
-// #define _AUTONOMOUS_
+//#define _DEBUG_
+ #define _AUTONOMOUS_
 
 #ifdef _AUTONOMOUS_
 #include "autonomous.cpp"
@@ -29,6 +29,7 @@ void setup()
   autonomousSetup();
   PS4.setLed(pink);
   PS4.sendToController();
+  delay(1000);
 #endif
 }
 
