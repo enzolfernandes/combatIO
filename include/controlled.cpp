@@ -44,4 +44,6 @@ void controlledLoop()
     Serial.println(rightMotorOutput);
     Serial.println("-------------------------");
 #endif
+
+    // TODO: Caso controle disconecte parar os motores
 }

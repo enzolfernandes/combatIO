@@ -1,10 +1,10 @@
-#include <joystick.cpp>
-#include <motors.cpp>
-
 // ! Modos
 //* Enquanto a linha abaixo não for um comentário, a referente parte não será compilada
-//#define _DEBUG_
- #define _AUTONOMOUS_
+#define _DEBUG_
+// #define _AUTONOMOUS_
+
+#include <joystick.cpp>
+#include <motors.cpp>
 
 #ifdef _AUTONOMOUS_
 #include "autonomous.cpp"

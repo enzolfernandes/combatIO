@@ -58,18 +58,18 @@ void test_lidar(void)
 
 void test_motors(void)
 {
+    leftMotor.write(forward);
+    rightMotor.write(forward);
+    delay(2000);
+    leftMotor.write(stopped);
+    rightMotor.write(stopped);
+    delay(2000);
     leftMotor.write(reverse);
     rightMotor.write(reverse);
     delay(2000);
     leftMotor.write(stopped);
     rightMotor.write(stopped);
     delay(2000);
-    leftMotor.write(forward);
-    rightMotor.write(forward);
-    delay(2000);
-    leftMotor.write(stopped);
-    rightMotor.write(stopped);
-
     TEST_ASSERT(true);
 }
 
