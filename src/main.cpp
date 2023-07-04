@@ -1,6 +1,6 @@
 // ! Modos
 //* Enquanto a linha abaixo não for um comentário, a referente parte não será compilada
-#define _DEBUG_
+ #define _DEBUG_
 // #define _AUTONOMOUS_
 
 #include <joystick.cpp>
@@ -21,7 +21,9 @@ void setup()
   ESP32PWM::allocateTimer(2);
   ESP32PWM::allocateTimer(3);
 
+#ifdef _DEBUG_
   Serial.begin(1200);
+#endif
   joystickSetup();
   motorsSetup();
 

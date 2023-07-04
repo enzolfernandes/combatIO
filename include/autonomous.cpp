@@ -1,9 +1,9 @@
 #include <IRreciver.cpp>
 #include <lidar.cpp>
 
-constexpr const int ready = 0xF30CFF00; // Botão 1
-constexpr const int start = 0xE718FF00; // Botão 2
-constexpr const int stop = 0xA15EFF00;  // Botão 3
+constexpr const uint32_t ready = 0xF30CFF00; // Botão 1
+constexpr const uint32_t start = 0xE718FF00; // Botão 2
+constexpr const uint32_t stop = 0xA15EFF00;  // Botão 3
 
 bool readyFlag = true;
 bool startFlag = false;

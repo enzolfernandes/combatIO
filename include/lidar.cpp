@@ -35,3 +35,4 @@ uint16_t lidarReadDistance()
 #endif
     return distanceSensor.read(); //mm
 }
+// TODO: Adicionar Status
