@@ -16,9 +16,9 @@ void lidarSetup()
         while (1);
     }
 
-    distanceSensor.setDistanceMode(VL53L1X::Long);
-    distanceSensor.setMeasurementTimingBudget(50000); // us
-    distanceSensor.startContinuous(50);               // ms
+    distanceSensor.setDistanceMode(VL53L1X::Short);
+    distanceSensor.setMeasurementTimingBudget(30000); // us //Padrão: 50000us
+    distanceSensor.startContinuous(30);               // ms //Padrão: 50ms
 }
 
 uint16_t lidarReadDistance()
