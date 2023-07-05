@@ -1,6 +1,9 @@
+constexpr const short minimumTriggerValue = 0;
+constexpr const short maximumTriggerValue = 127;
+
 constexpr const short deadZone = 5;
-constexpr const short minimumJoystickValue = -127;
-constexpr const short maximumJoystickValue = 127;
+constexpr const short minimumStickValue = -127;
+constexpr const short maximumStickValue = 127;
 
 short x = 0, y = 0, mapXValue = 0, mapYValue = 0;
 
@@ -8,14 +11,22 @@ void controlledLoop()
 {
         if (PS4.isConnected())
         {
-                x = PS4.LStickX();
-                mapXValue = map(x, minimumJoystickValue, maximumJoystickValue, reverse, forward);
-
-                y = PS4.LStickY();
-                mapYValue = map(y, minimumJoystickValue, maximumJoystickValue, reverse, forward);
-
+                // Arma
+                weapon.write(constrain(map(PS4.R2Value(), minimumTriggerValue, maximumTriggerValue, stopped, forward), stopped, forward));
 #ifdef _DEBUG_
                 Serial.println("----------");
+                Serial.print("Arma: ");
+                Serial.println(constrain(map(PS4.R2Value(), minimumTriggerValue, maximumTriggerValue, stopped, forward), stopped, forward));
+#endif
+
+                // Locomoção
+                x = PS4.LStickX();
+                mapXValue = map(x, minimumStickValue, maximumStickValue, reverse, forward);
+
+                y = PS4.LStickY();
+                mapYValue = map(y, minimumStickValue, maximumStickValue, reverse, forward);
+
+#ifdef _DEBUG_
                 Serial.print("Eixo X do Analogico: ");
                 Serial.println(x);
                 Serial.print("Eixo X Re-mapeado: ");
@@ -64,5 +75,6 @@ void controlledLoop()
         {
                 leftMotor.write(stopped);
                 rightMotor.write(stopped);
+                weapon.write(stopped);
         }
 }
