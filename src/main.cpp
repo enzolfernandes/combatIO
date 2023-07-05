@@ -3,8 +3,9 @@
 // #define _DEBUG_
 // #define _AUTONOMOUS_
 
-#include <joystick.cpp>
-#include <motors.cpp>
+#include <Arduino.h>
+#include "joystick.cpp"
+#include "motors.cpp"
 
 #ifdef _AUTONOMOUS_
 #include "autonomous.cpp"
