@@ -2,7 +2,7 @@
 
 constexpr const short rightMotorPin = 25;
 constexpr const short leftMotorPin = 26;
-constexpr const short weaponMotorPin = 26;
+constexpr const short weaponMotorPin = 27;
 
 constexpr const short OperationFrequency = 50; // Hz
 constexpr const short interval = 0;            // ms
