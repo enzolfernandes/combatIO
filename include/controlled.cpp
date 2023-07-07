@@ -1,5 +1,5 @@
 constexpr const short minimumTriggerValue = 0;
-constexpr const short maximumTriggerValue = 127;
+constexpr const short maximumTriggerValue = 255;
 
 constexpr const short deadZone = 5;
 constexpr const short minimumStickValue = -127;
@@ -38,7 +38,7 @@ void controlledLoop()
                 Serial.println(mapYValue);
 #endif
 
-                if (x ^ 2 + y ^ 2 == deadZone ^ 2)
+                if (x ^ 2 + y ^ 2 <= deadZone ^ 2) // Interior do Círculo de Zona Morta
                 {
                         leftMotor.write(stopped);
                         rightMotor.write(stopped);
