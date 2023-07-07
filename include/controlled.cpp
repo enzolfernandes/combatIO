@@ -1,6 +1,3 @@
-constexpr const short minimumTriggerValue = 0;
-constexpr const short maximumTriggerValue = 255;
-
 constexpr const short deadZone = 5;
 constexpr const short minimumStickValue = -127;
 constexpr const short maximumStickValue = 127;
@@ -11,13 +8,6 @@ void controlledLoop()
 {
         if (PS4.isConnected())
         {
-                // Arma
-                weapon.write(constrain(map(PS4.R2Value(), minimumTriggerValue, maximumTriggerValue, stopped, forward), stopped, forward));
-#ifdef _DEBUG_
-                Serial.println("----------");
-                Serial.print("Arma: ");
-                Serial.println(constrain(map(PS4.R2Value(), minimumTriggerValue, maximumTriggerValue, stopped, forward), stopped, forward));
-#endif
 
                 // Locomoção
                 x = PS4.LStickX();
