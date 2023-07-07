@@ -43,4 +43,8 @@ void loop()
 #else
   controlledLoop();
 #endif
+
+#ifdef _DEBUG_
+  delay(2000);
+#endif
 }
