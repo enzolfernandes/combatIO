@@ -1,10 +1,10 @@
 constexpr const short minimumTriggerValue = 0;
 constexpr const short maximumTriggerValue = 255;
 
-constexpr const short deadZone = 15;
-constexpr const short linearZone = deadZone + 10;
 constexpr const short minimumStickValue = -127;
 constexpr const short maximumStickValue = 127;
+constexpr const short deadZone = 15;
+constexpr const short linearZone = deadZone + 10;
 
 short x = 0, y = 0, mapXValue = 0, mapYValue = 0;
 
