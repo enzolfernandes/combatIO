@@ -21,15 +21,15 @@ Servo weapon;
 
 void motorsSetup()
 {
-    leftMotor.attach(leftMotorPin, minimumPulseWidth, maximumPulseWidth);
     leftMotor.setPeriodHertz(OperationFrequency);
+    leftMotor.attach(leftMotorPin, minimumPulseWidth, maximumPulseWidth);
     leftMotor.write(stopped);
 
-    rightMotor.attach(rightMotorPin, minimumPulseWidth, maximumPulseWidth);
     rightMotor.setPeriodHertz(OperationFrequency);
+    rightMotor.attach(rightMotorPin, minimumPulseWidth, maximumPulseWidth);
     rightMotor.write(stopped);
 
-    weapon.attach(weaponMotorPin, minimumPulseWidth, maximumPulseWidth);
     weapon.setPeriodHertz(OperationFrequency);
+    weapon.attach(weaponMotorPin, minimumPulseWidth, maximumPulseWidth);
     weapon.write(stopped);
 }
