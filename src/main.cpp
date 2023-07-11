@@ -23,7 +23,7 @@ void setup()
   ESP32PWM::allocateTimer(3);
 
 #ifdef _DEBUG_
-  Serial.begin(1200);
+  Serial.begin(115200);
 #endif
   joystickSetup();
   motorsSetup();
@@ -45,6 +45,6 @@ void loop()
 #endif
 
 #ifdef _DEBUG_
-  delay(2000);
+  delay(500);
 #endif
 }
