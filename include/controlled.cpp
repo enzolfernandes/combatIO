@@ -12,6 +12,13 @@ void controlledLoop()
 {
         if (PS4.isConnected())
         {
+                // Arma
+                weapon.write(constrain(map(PS4.R2Value(), minimumTriggerValue, maximumTriggerValue, stopped, forward), stopped, forward));
+#ifdef _DEBUG_
+                Serial.println("----------");
+                Serial.print("Arma: ");
+                Serial.println(constrain(map(PS4.R2Value(), minimumTriggerValue, maximumTriggerValue, stopped, forward), stopped, forward));
+#endif
 
                 // Locomoção
                 x = PS4.LStickX();

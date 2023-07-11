@@ -1,2 +1,2 @@
-# Shenbong 🐲
-Robô Sumô 3kg Autônomo e Rádio Controlado, utilizando a [Combat I/O V3](https://github.com/roboticatera/CombatIO). Inicialmente feito para competir na RoboCore Experience 2023.
+# Combat I/O ⚔️
+Placa I/O genérica para robôs da categoria combate e sumô, utilizando o ESP32 DevKit V1.

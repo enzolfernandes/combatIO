@@ -2,6 +2,7 @@
 
 constexpr const short rightMotorPin = 25;
 constexpr const short leftMotorPin = 26;
+constexpr const short weaponMotorPin = 27;
 
 constexpr const short OperationFrequency = 50; // Hz
 constexpr const short interval = 0;            // ms
@@ -16,6 +17,7 @@ constexpr const short forward = 180;
 
 Servo leftMotor;
 Servo rightMotor;
+Servo weapon;
 
 void motorsSetup()
 {
@@ -26,4 +28,8 @@ void motorsSetup()
     rightMotor.setPeriodHertz(OperationFrequency);
     rightMotor.attach(rightMotorPin, minimumPulseWidth, maximumPulseWidth);
     rightMotor.write(stopped);
+
+    weapon.setPeriodHertz(OperationFrequency);
+    weapon.attach(weaponMotorPin, minimumPulseWidth, maximumPulseWidth);
+    weapon.write(stopped);
 }
