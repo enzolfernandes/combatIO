@@ -29,7 +29,7 @@ void motorsSetup()
     rightMotor.setPeriodHertz(OperationFrequency);
     rightMotor.write(stopped);
 
-    rightMotor.attach(weaponMotorPin, minimumPulseWidth, maximumPulseWidth);
-    rightMotor.setPeriodHertz(OperationFrequency);
-    rightMotor.write(stopped);
+    weapon.attach(weaponMotorPin, minimumPulseWidth, maximumPulseWidth);
+    weapon.setPeriodHertz(OperationFrequency);
+    weapon.write(stopped);
 }

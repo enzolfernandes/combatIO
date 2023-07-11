@@ -60,15 +60,19 @@ void test_motors(void)
 {
     leftMotor.write(forward);
     rightMotor.write(forward);
+    weapon.write(forward);
     delay(2000);
     leftMotor.write(stopped);
     rightMotor.write(stopped);
+    weapon.write(stopped);
     delay(2000);
     leftMotor.write(reverse);
     rightMotor.write(reverse);
+    weapon.write(reverse);
     delay(2000);
     leftMotor.write(stopped);
     rightMotor.write(stopped);
+    weapon.write(stopped);
     delay(2000);
     TEST_ASSERT(true);
 }

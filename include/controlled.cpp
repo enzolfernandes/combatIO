@@ -1,7 +1,8 @@
 constexpr const short minimumTriggerValue = 0;
 constexpr const short maximumTriggerValue = 255;
 
-constexpr const short deadZone = 5;
+constexpr const short deadZone = 15;
+constexpr const short linearZone = deadZone + 10;
 constexpr const short minimumStickValue = -127;
 constexpr const short maximumStickValue = 127;
 
@@ -38,7 +39,7 @@ void controlledLoop()
                 Serial.println(mapYValue);
 #endif
 
-                if (x ^ 2 + y ^ 2 <= deadZone ^ 2) // Interior do Círculo de Zona Morta
+                if ((pow(x, 2) + pow(y, 2)) <= pow(deadZone, 2)) // Interior do Círculo de Zona Morta
                 {
                         leftMotor.write(stopped);
                         rightMotor.write(stopped);
@@ -46,7 +47,7 @@ void controlledLoop()
                         Serial.println("Zona Morta");
 #endif
                 }
-                else if (x > -deadZone && x < deadZone)
+                else if (-linearZone < x < linearZone)
                 {
                         leftMotor.write(constrain(mapYValue, reverse, forward));
                         rightMotor.write(constrain(mapYValue, reverse, forward));
@@ -57,7 +58,7 @@ void controlledLoop()
                         Serial.println(constrain(mapYValue, reverse, forward));
 #endif
                 }
-                else if (x < -deadZone || x > deadZone)
+                else if (x < -linearZone || x > linearZone)
                 {
                         leftMotor.write(constrain((mapYValue + mapXValue), reverse, forward));
                         rightMotor.write(constrain((mapYValue - mapXValue), reverse, forward));
