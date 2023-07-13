@@ -13,11 +13,27 @@ void controlledLoop()
         if (PS4.isConnected())
         {
                 // Arma
-                weapon.write(constrain(map(PS4.R2Value(), minimumTriggerValue, maximumTriggerValue, stopped, forward), stopped, forward));
+                //! Para ESCs não reversíveis:
+                // weapon.write(constrain(map(PS4.R2Value(), minimumTriggerValue, maximumTriggerValue, stopped, forward), stopped, forward));
+
+                //! Para ESCs reversíveis:
+                if (PS4.Triangle())
+                {
+                        weapon.write(forward);
+                }
+                else if (PS4.Circle())
+                {
+                        weapon.write(reverse);
+                }
+                else
+                {
+                        weapon.write(stopped);
+                }
+
 #ifdef _DEBUG_
                 Serial.println("----------");
                 Serial.print("Arma: ");
-                Serial.println(constrain(map(PS4.R2Value(), minimumTriggerValue, maximumTriggerValue, stopped, forward), stopped, forward));
+                Serial.println(weapon.read());
 #endif
 
                 // Locomoção
@@ -30,13 +46,17 @@ void controlledLoop()
 #ifdef _DEBUG_
                 Serial.print("Eixo X do Analogico: ");
                 Serial.println(x);
-                Serial.print("Eixo X Re-mapeado: ");
-                Serial.println(mapXValue);
-
                 Serial.print("Eixo Y do Analogico: ");
                 Serial.println(y);
+
+                Serial.println();
+
+                Serial.print("Eixo X Re-mapeado: ");
+                Serial.println(mapXValue);
                 Serial.print("Eixo Y Re-mapeado: ");
                 Serial.println(mapYValue);
+
+                Serial.println();
 #endif
 
                 if ((pow(x, 2) + pow(y, 2)) <= pow(deadZone, 2)) // Interior do Círculo de Zona Morta
@@ -47,7 +67,7 @@ void controlledLoop()
                         Serial.println("Zona Morta");
 #endif
                 }
-                else if (-linearZone < x < linearZone)
+                else if (-linearZone < x && x < linearZone)
                 {
                         leftMotor.write(constrain(mapYValue, reverse, forward));
                         rightMotor.write(constrain(mapYValue, reverse, forward));
@@ -55,10 +75,10 @@ void controlledLoop()
 #ifdef _DEBUG_
                         Serial.println("Zona de Movimento Linear");
                         Serial.print("Valor enviado aos motores: ");
-                        Serial.println(constrain(mapYValue, reverse, forward));
+                        Serial.println(leftMotor.read());
 #endif
                 }
-                else if (x < -linearZone || x > linearZone)
+                else if (-linearZone > x || x > linearZone)
                 {
                         leftMotor.write(constrain((mapYValue + mapXValue), reverse, forward));
                         rightMotor.write(constrain((mapYValue - mapXValue), reverse, forward));
@@ -66,9 +86,9 @@ void controlledLoop()
 #ifdef _DEBUG_
                         Serial.println("Zona de Movimento Curvo");
                         Serial.print("Valor enviado ao motor Esquerdo: ");
-                        Serial.println(constrain((mapYValue + mapXValue), reverse, forward));
+                        Serial.println(leftMotor.read());
                         Serial.print("Valor enviado ao motor Direto: ");
-                        Serial.println(constrain((mapYValue - mapXValue), reverse, forward));
+                        Serial.println(rightMotor.read());
 #endif
                 }
         }
