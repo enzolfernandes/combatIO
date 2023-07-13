@@ -34,6 +34,8 @@ void controlledLoop()
                 Serial.println("----------");
                 Serial.print("Arma: ");
                 Serial.println(weapon.read());
+                
+                Serial.println();
 #endif
 
                 // Locomoção
