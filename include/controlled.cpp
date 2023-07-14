@@ -108,11 +108,11 @@ void controlledLoop()
                         Serial.println(rightMotor.read());
 #endif
                 }
-                else
-                {
-                        leftMotor.write(stopped);
-                        rightMotor.write(stopped);
-                        weapon.write(stopped);
-                }
+        }
+        else
+        {
+                leftMotor.write(stopped);
+                rightMotor.write(stopped);
+                weapon.write(stopped);
         }
 }
