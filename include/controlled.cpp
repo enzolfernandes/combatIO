@@ -3,7 +3,7 @@ constexpr const short maximumTriggerValue = 255;
 
 constexpr const short minimumStickValue = -127;
 constexpr const short maximumStickValue = 127;
-constexpr const short deadZone = 15;
+constexpr const short deadZone = 10;
 constexpr const short linearZone = deadZone + 10;
 
 short x = 0, y = 0, mapXValue = 0, mapYValue = 0;
@@ -34,7 +34,7 @@ void controlledLoop()
                 Serial.println("----------");
                 Serial.print("Arma: ");
                 Serial.println(weapon.read());
-                
+
                 Serial.println();
 #endif
 
@@ -80,24 +80,39 @@ void controlledLoop()
                         Serial.println(leftMotor.read());
 #endif
                 }
-                else if (-linearZone > x || x > linearZone)
+                else if (x <= -linearZone) // Zona Esquerda
                 {
-                        leftMotor.write(constrain((mapYValue + mapXValue), reverse, forward));
-                        rightMotor.write(constrain((mapYValue - mapXValue), reverse, forward));
+
+                        leftMotor.write(constrain(mapYValue, stopped, forward));
+                        rightMotor.write(constrain(mapYValue, stopped, reverse));
 
 #ifdef _DEBUG_
-                        Serial.println("Zona de Movimento Curvo");
+                        Serial.println("Zona de Movimento Curvilíneo Esquerdo");
                         Serial.print("Valor enviado ao motor Esquerdo: ");
                         Serial.println(leftMotor.read());
-                        Serial.print("Valor enviado ao motor Direto: ");
+                        Serial.print("Valor enviado ao motor Direito: ");
                         Serial.println(rightMotor.read());
 #endif
                 }
-        }
-        else
-        {
-                leftMotor.write(stopped);
-                rightMotor.write(stopped);
-                weapon.write(stopped);
+                else if (x >= linearZone) // Zona Direita
+                {
+
+                        leftMotor.write(constrain(mapYValue, stopped, reverse));
+                        rightMotor.write(constrain(mapYValue, stopped, forward));
+
+#ifdef _DEBUG_
+                        Serial.println("Zona de Movimento Curvilíneo Direito");
+                        Serial.print("Valor enviado ao motor Esquerdo: ");
+                        Serial.println(leftMotor.read());
+                        Serial.print("Valor enviado ao motor Direito: ");
+                        Serial.println(rightMotor.read());
+#endif
+                }
+                else
+                {
+                        leftMotor.write(stopped);
+                        rightMotor.write(stopped);
+                        weapon.write(stopped);
+                }
         }
 }
