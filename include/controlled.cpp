@@ -77,8 +77,10 @@ void controlledLoop()
 
 #ifdef _DEBUG_
                         Serial.println("Zona de Movimento Linear");
-                        Serial.print("Valor enviado aos motores: ");
+                        Serial.print("Valor enviado ao motor Esquerdo: ");
                         Serial.println(leftMotor.read());
+                        Serial.print("Valor enviado ao motor Direito: ");
+                        Serial.println(rightMotor.read());
 #endif
                 }
                 else if (x <= -linearZone) // Zona Esquerda
