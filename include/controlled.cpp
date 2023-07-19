@@ -5,6 +5,7 @@ constexpr const short minimumStickValue = -127;
 constexpr const short maximumStickValue = 127;
 constexpr const short deadZone = 10;
 constexpr const short linearZone = deadZone + 10;
+constexpr const short correction = forward * 0.4; // Correção para reduzir velocidade
 
 short x = 0, y = 0, mapXValue = 0, mapYValue = 0;
 
@@ -71,8 +72,8 @@ void controlledLoop()
                 }
                 else if (-linearZone < x && x < linearZone)
                 {
-                        leftMotor.write(constrain(mapYValue, reverse, forward));
-                        rightMotor.write(constrain(mapYValue, reverse, forward));
+                        leftMotor.write(constrain(mapYValue, reverse, forward) - correction);
+                        rightMotor.write(constrain(mapYValue, reverse, forward) - correction);
 
 #ifdef _DEBUG_
                         Serial.println("Zona de Movimento Linear");
@@ -82,8 +83,8 @@ void controlledLoop()
                 }
                 else if (x <= -linearZone) // Zona Esquerda
                 {
-                        leftMotor.write(constrain(mapYValue, stopped, reverse));
-                        rightMotor.write(constrain(mapYValue, stopped, forward));
+                        leftMotor.write(constrain(mapYValue, stopped, reverse) - correction);
+                        rightMotor.write(constrain(mapYValue, stopped, forward) - correction);
 
 #ifdef _DEBUG_
                         Serial.println("Zona de Movimento Curvilíneo Esquerdo");
@@ -96,8 +97,8 @@ void controlledLoop()
                 else if (x >= linearZone) // Zona Direita
                 {
 
-                        leftMotor.write(constrain(mapYValue, stopped, forward));
-                        rightMotor.write(constrain(mapYValue, stopped, reverse));
+                        leftMotor.write(constrain(mapYValue, stopped, forward) - correction);
+                        rightMotor.write(constrain(mapYValue, stopped, reverse) - correction);
 
 #ifdef _DEBUG_
                         Serial.println("Zona de Movimento Curvilíneo Direito");
