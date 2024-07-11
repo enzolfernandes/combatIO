@@ -5,7 +5,7 @@ constexpr const short minimumStickValue = -127;
 constexpr const short maximumStickValue = 127;
 constexpr const short deadZone = 10;
 constexpr const short linearZone = deadZone + 10;
-constexpr const short correction = forward * 0.4; // Correção para reduzir velocidade
+constexpr const short correction = forward * 0; // Correção para reduzir velocidade, use 0 caso não tenha diferença de velocidade entre as rodas 
 
 short x = 0, y = 0, mapXValue = 0, mapYValue = 0;
 
@@ -15,21 +15,21 @@ void controlledLoop()
         {
                 // Arma
                 //! Para ESCs não reversíveis:
-                // weapon.write(constrain(map(PS4.R2Value(), minimumTriggerValue, maximumTriggerValue, stopped, forward), stopped, forward));
+                weapon.write(constrain(map(PS4.R2Value(), minimumTriggerValue, maximumTriggerValue, stopped, forward), stopped, forward));
 
                 //! Para ESCs reversíveis:
-                if (PS4.Triangle())
-                {
-                        weapon.write(forward);
-                }
-                else if (PS4.Circle())
-                {
-                        weapon.write(reverse);
-                }
-                else
-                {
-                        weapon.write(stopped);
-                }
+                // if (PS4.Triangle())
+                // {
+                //         weapon.write(forward);
+                // }
+                // else if (PS4.Circle())
+                // {
+                //         weapon.write(reverse);
+                // }
+                // else
+                // {
+                //         weapon.write(stopped);
+                // }
 
 #ifdef _DEBUG_
                 Serial.println("----------");
