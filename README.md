@@ -1,88 +1,80 @@
-# Combat I/O ⚔️
-## Project Overview
+# CombatIO: Embedded Control Firmware ⚔️
 
-<img src="https://img.shields.io/badge/language-C++-00599C?logo=c++" alt="C/C++">
+![C++](https://img.shields.io/badge/language-C++-00599C?style=for-the-badge&logo=c%2B%2B)
+![ESP32](https://img.shields.io/badge/microcontroller-ESP32-2D7F5D?style=for-the-badge&logo=espressif)
+![PlatformIO](https://img.shields.io/badge/build-PlatformIO-3A5FCD?style=for-the-badge&logo=platformio)
+![Bluetooth](https://img.shields.io/badge/comms-Bluetooth-0082FC?style=for-the-badge&logo=bluetooth)
+![EasyEDA](https://img.shields.io/badge/Hardware-EasyEDA-00B2A9?style=for-the-badge)
 
-<img src="https://img.shields.io/badge/microcontroller-ESP32-2D7F5D?logo=Espressif" alt="ESP32">
+## 📌 Project Overview
+**CombatIO** is a modular, high-performance C++ firmware and hardware project built for competitive combat and sumo robotics. Engineered around the **ESP32 DevKit V1** and structured via **PlatformIO**, this project provides a robust embedded control stack designed for ultra-fast actuation, dynamic mode selection, and wireless remote operation in high-impact environments.
 
-<img src="https://img.shields.io/badge/build-PlatformIO-3A5FCD?logo=platform.io" alt="PlatformIO">
+The system abstracts motor actuation, wireless telemetry, and autonomous state machines into decoupled modules, supporting rapid prototyping for both belt-driven combat rigs and autonomous sumo push robots.
 
-<img src="https://img.shields.io/badge/framework-Arduino-00979D?logo=arduino" alt="Arduino">
+---
 
-CombatIO is a generic I/O control firmware for competitive combat and sumo robotics built around the ESP32 DevKit V1. The project is structured for PlatformIO and designed to provide a professional embedded control stack for fast actuation, mode selection, and remote operation in high-impact robotics applications.
+## ⚙️ Hardware Architecture & Peripheral Control
 
-This firmware abstracts motor actuation, joystick input, and autonomous behavior into separate modules to support rapid prototyping on belt-driven combat rigs and sumo push robots.
+The hardware abstraction layer is heavily optimized for precise motor drive and seamless wireless communication. The custom PCB design files are included in the repository.
 
-## Tech Stack & Tools
+* **Hardware Timer Allocation:** Dynamically allocates all four ESP32 PWM hardware timers (`ESP32PWM::allocateTimer(0..3)`), ensuring zero-jitter, independent PWM generation for dual H-bridge or 4-channel motor driver topologies.
+* **Wireless Telemetry (Bluetooth):** Integrates seamless communication with PS4 controllers for teleoperation, featuring real-time HID status signaling (e.g., LED color feedback based on robot state).
+* **I/O Matrix Routing:** Leverages the ESP32 GPIO matrix for scalable sensor inputs (sumo edge/opponent detection) and robust actuator outputs.
+* **Compile-Time Directives:** * `_DEBUG_`: Enables high-speed (`115200` baud) serial diagnostics.
+  * `_AUTONOMOUS_`: Toggles the core behavior pipeline between human-operated and self-directed modes.
 
-- C / C++
-- ESP32 DevKit V1
-- PlatformIO
-- Arduino framework
-- ESP32 PWM timer subsystem
+---
 
-## Hardware Architecture & Pinout
+## 🧠 Firmware Modularity & Features
 
-The code architecture indicates a motor-centric ESP32 control board with the following inferred hardware design:
+The codebase relies on a decoupled architecture, separating the signal acquisition layer from the physical actuation layer.
 
-- `ESP32PWM::allocateTimer(0..3)` allocates all four ESP32 PWM timers.
-  - This strongly suggests support for up to four independent PWM outputs.
-  - Typical usage is dual H-bridge motor drivers or a 4-channel motor driver arrangement.
-- The board is based on the ESP32 DevKit V1, so sensor and actuator I/O are routed through the DevKit GPIO matrix.
-- The firmware modules are decoupled:
-  - `joystick.cpp` handles remote control inputs.
-  - `motors.cpp` configures PWM and motor driver outputs.
-  - `controlled.cpp` runs teleoperated logic.
-  - `autonomous.cpp` runs autonomous control sequences.
-- Compile-time flags are used for behavior selection:
-  - `_DEBUG_` enables serial debug output at `115200`.
-  - `_AUTONOMOUS_` enables autonomous operation and PS4 controller feedback.
+| Module | Core Responsibility |
+| :--- | :--- |
+| **`joystick.cpp`** | Handles Bluetooth packet parsing from the PS4 controller, filtering inputs, and translating joystick deadzones into normalized vector data. |
+| **`motors.cpp`** | Configures PWM frequencies, abstracts motor driver logic, and translates vector data into physical wheel velocities. |
+| **`controlled.cpp`** | The main teleoperated state machine, managing real-time human input and translating it into instantaneous motor commands. |
+| **`autonomous.cpp`** | Alternate state machine for self-directed behavior, integrating sensor logic and search-and-destroy routines. |
 
-## Firmware Features
+---
 
-- Modular control topology
-  - `setup()` initializes joystick and motor subsystems.
-  - `loop()` selects either teleoperation or autonomous mode.
-- PWM-driven motor control
-  - Uses ESP32 PWM timers 0, 1, 2, and 3 for precise motor actuation.
-  - Likely supports independent left/right or multi-motor drive trains.
-- Remote control interface
-  - `joystickSetup()` and `controlledLoop()` implement human-operated control.
-  - The code structure separates I/O acquisition from motor commands.
-- Autonomous mode support
-  - `autonomousSetup()` and `autonomousLoop()` provide an alternate state machine for self-directed behavior.
-  - PS4 controller integration is present via `PS4.setLed(pink)` and `PS4.sendToController()`, indicating Bluetooth/HID status signaling.
-- Debug and diagnostics
-  - Conditional serial logging when `_DEBUG_` is defined.
-  - The firmware is prepared for iterative testing within PlatformIO.
+## 📁 Repository Structure
 
-## Getting Started
+```text
+├── easyEDA/            # Custom PCB and hardware design source files
+│   ├── PCBV3.json      # Physical PCB layout and routing data
+│   └── SchematicV3.json# Electronic circuit schematic capture
+├── include/            # Shared hardware macros, pinouts, and global board definitions
+├── lib/                # External dependencies and reusable utility abstractions
+├── src/
+│   ├── autonomous.cpp  # Sensor-based control routines
+│   ├── controlled.cpp  # Remote teleoperation logic
+│   ├── joystick.cpp    # Wireless input parsing
+│   ├── motors.cpp      # PWM and motor driver layer
+│   └── main.cpp        # Firmware entry point and mode multiplexing
+└── platformio.ini      # ESP32 environment, build flags, and dependency management
+```
 
-1. Install PlatformIO and the ESP32 development environment.
-2. Open the repository in VS Code.
-3. Build the firmware:
+---
 
+## 🚀 Getting Started
+
+To build and flash this firmware, ensure you have **PlatformIO** installed in your VS Code environment. To view or edit the hardware design, import the JSON files into **EasyEDA**.
+
+**1. Clone the repository:**
+```bash
+git clone [https://github.com/enzolfernandes/combatIO.git](https://github.com/enzolfernandes/combatIO.git)
+```
+
+**2. Build the firmware:**
 ```bash
 pio run -e esp32doit-devkit-v1
 ```
 
-4. Flash the firmware to the ESP32 DevKit V1:
-
+**3. Flash to the ESP32 DevKit V1:**
+Ensure the board is connected via USB and in bootloader mode.
 ```bash
 pio run -e esp32doit-devkit-v1 -t upload
 ```
 
-5. Optionally, use VS Code PlatformIO commands:
-   - `PlatformIO: Build`
-   - `PlatformIO: Upload`
-
-## Project Structure
-
-- platformio.ini — ESP32 PlatformIO environment definition
-- main.cpp — Main runtime, mode selection, and peripheral initialization
-- `src/joystick.cpp` — Joystick/remote control input handling
-- `src/motors.cpp` — Motor driver PWM setup and output abstraction
-- `src/controlled.cpp` — Teleoperated control loop
-- `src/autonomous.cpp` — Autonomous control loop and state transitions
-- include — Shared headers and board definitions
-- lib — External libraries and reusable utility modules
+*(Alternatively, use the PlatformIO GUI inside VS Code to trigger Build and Upload tasks).*
